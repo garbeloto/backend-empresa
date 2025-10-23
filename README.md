@@ -8,5 +8,5 @@ funções concluídas:
 - GET buscar colaborador pelo nome
 
 funções em andamento:
--PUT editar colaborador
--entidade departamento
+- PUT editar colaborador
+- entidade departamento
