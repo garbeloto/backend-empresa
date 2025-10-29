@@ -42,9 +42,9 @@ public class ColaboradorController {
             return colaborador;
         }
 
+    }
         @PutMapping("/editarColaborador/{idColaboradorAlterar}")
         public String editarColaborador(@PathVariable int idColaboradorAlterar, @RequestBody Colaborador novoColaborador){
-
 
             Colaborador colaborador = colaboradorRepository.findById(idColaboradorAlterar).get();
 
@@ -52,13 +52,13 @@ public class ColaboradorController {
             colaborador.setCpfColaborador(novoColaborador.getCpfColaborador());
             colaborador.setEmailColaborador(novoColaborador.getEmailColaborador());
             colaborador.setSenhaColaborador(novoColaborador.getSenhaColaborador());
-            colaborador.setDepartamento(novoColaborador.getDepartamento());
 
             colaboradorRepository.save(colaborador);
 
             return "Pessoa alterada com sucesso!";
         }
-    }
+
+    
 
 
 

@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+
 
 @Entity
 public class Colaborador {
@@ -20,20 +20,18 @@ public class Colaborador {
     private String emailColaborador;
     private String senhaColaborador;
 
-    @ManyToOne
-    private Departamento departamento;
+    
 
     public Colaborador (){
 
     }
 
-    public Colaborador(String nomeColaborador, String cpfColaborador, String emailColaborador, String senhaColaborador,
-            Departamento departamento) {
+    public Colaborador(String nomeColaborador, String cpfColaborador, String emailColaborador, String senhaColaborador) {
         this.nomeColaborador = nomeColaborador;
         this.cpfColaborador = cpfColaborador;
         this.emailColaborador = emailColaborador;
         this.senhaColaborador = senhaColaborador;
-        this.departamento = departamento;
+
     }
 
 
@@ -78,13 +76,7 @@ public class Colaborador {
         this.senhaColaborador = senhaColaborador;
     }
 
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-    }
+  
 
     
 }
