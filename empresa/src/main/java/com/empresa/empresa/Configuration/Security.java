@@ -38,7 +38,7 @@ public class Security {
 
 
 
-/* 
+
 @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 return http
@@ -66,7 +66,9 @@ public class Security {
 
 
 }
-  */
+
+
+/* 
 //para entrar sem senha:
 @Bean
      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,3 +80,4 @@ public class Security {
      .build();
      }
     }
+     */

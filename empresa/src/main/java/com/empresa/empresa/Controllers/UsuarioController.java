@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.empresa.empresa.Dto.UsuarioLoginDto;
 import com.empresa.empresa.Entities.Usuario;
 import com.empresa.empresa.Repositories.UsuarioRepository;
 
@@ -22,15 +23,8 @@ public class UsuarioController {
     private PasswordEncoder passwordEncoder;
 
 
-    @PostMapping("/cadastrarUsuario")
-    public String cadastrarUsuario (@RequestBody Usuario usuario){
-        usuarioRepository.save(usuario);
-
-        return "Usuário cadastrado com sucesso!";
-    }
-
-    @PostMapping("/salvarComValidacoes")
-    public String salvarEmailUnico (@RequestBody Usuario usuario){ //verificar se o email já existe no banco de dados
+    @PostMapping("/cadastrarComValidacoes")
+    public String cadastrarEmailUnico (@RequestBody Usuario usuario){ //verificar se o email já existe no banco de dados
 
         String email = usuario.getEmailUsuario();
 
@@ -42,8 +36,28 @@ public class UsuarioController {
             usuario.setSenhaUsuario(senhaCript);
 
             usuarioRepository.save(usuario);
-            return "Pessoa salva com sucesso!";
+            return "Usuário cadastrado com sucesso!";
         }
     
-}
+    }
+
+    @PostMapping("/loginUsuario") //login 
+    private String login (@RequestBody UsuarioLoginDto usuarioLoginDto) {
+
+        Usuario usuario = usuarioRepository.findByEmailUsuario(usuarioLoginDto.getEmailUsuario()).get();
+
+        if (usuario != null) {
+            
+            if (passwordEncoder.matches(usuarioLoginDto.getSenhaUsuario(), usuario.getSenhaUsuario())) {
+                
+                return "Login realizado com sucesso!";
+            } else {
+                return "Senha incorreta.";
+            }
+
+
+        } else {
+            return "Email não cadastrado.";
+        }
+    }
 }

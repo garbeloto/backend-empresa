@@ -55,7 +55,7 @@ public class ColaboradorController {
 
             colaboradorRepository.save(colaborador);
 
-            return "Pessoa alterada com sucesso!";
+            return "Colaborador alterado com sucesso!";
         }
 
     
