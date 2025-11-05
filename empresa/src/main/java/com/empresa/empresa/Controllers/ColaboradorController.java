@@ -25,7 +25,7 @@ public class ColaboradorController {
     private ColaboradorRepository colaboradorRepository;
 
 
-    @PostMapping("/cadastrarColaborador")
+    @PostMapping("/cadastrarColaborador") //cadastrar colaborador com senha cript e fazer colaborador dto
     public String cadastrarColaborador(@RequestBody Colaborador colaborador){
         colaboradorRepository.save(colaborador);
 
@@ -57,9 +57,6 @@ public class ColaboradorController {
 
             return "Colaborador alterado com sucesso!";
         }
-
-    
-
 
 
     

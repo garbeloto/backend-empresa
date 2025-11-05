@@ -22,12 +22,9 @@ public class Departamento {
     @JsonIgnore
     public List<Colaborador> colaboradores;
 
-
     public Departamento(){
 
     }
-
-
 
     public Departamento(String nomeDepartamento) {
         this.nomeDepartamento = nomeDepartamento;

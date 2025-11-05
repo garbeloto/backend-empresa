@@ -24,7 +24,6 @@ public class Colaborador {
     @ManyToOne
     private Departamento departamento;
     
-
     public Colaborador (){
 
     }

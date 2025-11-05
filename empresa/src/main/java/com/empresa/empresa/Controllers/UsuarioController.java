@@ -29,7 +29,9 @@ public class UsuarioController {
         String email = usuario.getEmailUsuario();
 
         if (usuarioRepository.findByEmailUsuario(email).isPresent()) {
+
             return "Email já cadastrado!";
+
         } else {
 
             String senhaCript = passwordEncoder.encode(usuario.getSenhaUsuario());
@@ -49,12 +51,12 @@ public class UsuarioController {
         if (usuario != null) {
             
             if (passwordEncoder.matches(usuarioLoginDto.getSenhaUsuario(), usuario.getSenhaUsuario())) {
-                
+
                 return "Login realizado com sucesso!";
+                
             } else {
                 return "Senha incorreta.";
             }
-
 
         } else {
             return "Email não cadastrado.";
