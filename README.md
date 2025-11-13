@@ -3,20 +3,49 @@ sistema back-end do projeto integrador senac sc
 
 back-end empresa - gerenciar colaboradores:
 
-funções concluídas: 
-- POST cadastrar colaborador
-- GET buscar colaborador pelo nome
+Funções Concluídas: 
+Crud colaborador:
 - PUT editar colaborador
-- entidade departamento relacionando com colaborador
+- GET buscar colaborador pelo nome
+- GET listar colaboradores
+- POST cadastrar colaborador
+- DELETE deletarColaborador
 
-
-- entidades: UsuarioDto e UsuarioLoginDto
-- POST cadastrar usuário com validação de email único e salvar com senha criptografada
+Crud usuario:
+- PUT editar usuario
 - POST login usuário
+- POST cadastrar usuário com validação de email único e salvar com senha criptografada
+- GET listar usuarios
+- DELETE deletar usuario
 
-- repositorio e controller do departamento
-- GET listarDepartamento
+- listar departamentos que estão no bd
+  
+Entidades:
+- Colaborador
+- Departamento
+- Usuario
 
-funções em andamento:
+Repositórios: 
+- ColaboradorRepository
+- DepartamentoRepository
+- UsuarioRepository
+  
+Controller:
+- ColaboradorController
+- DepartamentoController
+- UsuarioController
 
-- alterar cadastro do colaborador para relacionar com departamento ao salvar
+DTO:
+- ColaboradorDto
+- ColaboradorLoginDto
+- UsuarioDto
+- UsuarioLoginDto
+
+Funções em andamento:
+
+- senha criptografada para usuario, colaborador e profissional
+- cadastrar colaborador com validações
+- fazer login colaboardor com colaboradorLoginDto
+- entidade checkIn e conectar com colaborador
+- crud profissional
+
