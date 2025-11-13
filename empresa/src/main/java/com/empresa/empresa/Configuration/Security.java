@@ -16,7 +16,7 @@ import com.empresa.empresa.Repositories.UsuarioRepository;
 @Configuration
 public class Security {
 
-   @Bean
+        @Bean
         public UserDetailsService userDetailsService(UsuarioRepository repo) {
                 return username -> repo.findByEmailUsuario(username)
                                 .map(p -> org.springframework.security.core.userdetails.User
@@ -27,19 +27,12 @@ public class Security {
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
         }
 
-
-
-
-
         @Bean
         public PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
         }
 
-
-
-
-@Bean
+        @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 return http
                                 .csrf(csrf -> csrf.disable())
@@ -55,29 +48,27 @@ public class Security {
                                                                 "/swagger-resources/**",
                                                                 "/webjars/**")
                                                 .permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/usuario/cadastrarUsuario").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/usuario/cadastrarUsuario")
+                                                .permitAll()
                                                 .anyRequest().authenticated())
                                 .httpBasic(b -> {
                                 })
                                 .build();
         }
 
-
-
-
 }
 
-
-/* 
-//para entrar sem senha:
-@Bean
-     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-     return http
-     .csrf(csrf -> csrf.disable())
-     .authorizeHttpRequests(auth -> auth
-     .anyRequest().permitAll())
-     .httpBasic(org.springframework.security.config.Customizer.withDefaults())
-     .build();
-     }
-    }
-     */
+/*
+ * //para entrar sem senha:
+ * 
+ * @Bean
+ * public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+ * return http
+ * .csrf(csrf -> csrf.disable())
+ * .authorizeHttpRequests(auth -> auth
+ * .anyRequest().permitAll())
+ * .httpBasic(org.springframework.security.config.Customizer.withDefaults())
+ * .build();
+ * }
+ * }
+ */

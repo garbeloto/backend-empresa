@@ -11,15 +11,15 @@ import com.empresa.empresa.Entities.Departamento;
 import com.empresa.empresa.Repositories.DepartamentoRepository;
 
 @RestController
-@RequestMapping("/departamentos")
+@RequestMapping("/departamento")
 public class DepartamentoController {
 
     @Autowired
     DepartamentoRepository departamentoRepository;
 
-    @GetMapping
+    @GetMapping("listarDepartamento")
     public List<Departamento> listarDepartamentos() {
         return departamentoRepository.findAll();
     }
-    
+
 }
