@@ -1,9 +1,12 @@
 package com.empresa.empresa.Controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,109 +17,67 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.empresa.empresa.Dto.ColaboradorDto;
 import com.empresa.empresa.Entities.Colaborador;
-import com.empresa.empresa.Entities.Departamento;
-import com.empresa.empresa.Entities.Usuario;
-import com.empresa.empresa.Repositories.ColaboradorRepository;
-import com.empresa.empresa.Repositories.DepartamentoRepository;
+import com.empresa.empresa.Services.ColaboradorService;
 
 @RestController
-
 @RequestMapping("/colaborador")
 public class ColaboradorController {
 
     @Autowired
-    ColaboradorRepository colaboradorRepository;
+    private ColaboradorService colaboradorService;
 
-    @Autowired
-    DepartamentoRepository departamentoRepository;
+    // Rota: POST /colaborador/cadastrarColaborador
+    @PostMapping("/cadastrarColaborador")
+    public ResponseEntity<String> cadastrarColaborador(@RequestBody ColaboradorDto dados) {
+        // Pegamos o email da empresa logada automaticamente para vincular o colaborador a ela
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String emailEmpresa = auth.getName();
 
-    @PostMapping("/cadastrarColaborador") // cadastrar colaborador com senha cript e fazer colaborador dto
-    public String cadastrarColaborador(@RequestBody Colaborador colaborador) {
-        colaboradorRepository.save(colaborador);
+        // O Service cuida de verificar email único, criptografar senha e criar usuário
+        colaboradorService.cadastrarColaborador(dados, emailEmpresa);
 
-        return "Colaborador cadastrado com sucesso!";
+        return ResponseEntity.ok("Colaborador cadastrado com sucesso!");
     }
 
+    // Rota: GET /colaborador/listarColaboradores
     @GetMapping("/listarColaboradores")
-    public List<Colaborador> listarColaboradores() {
-        List<Colaborador> listarColaboradores = colaboradorRepository.findAll();
-
-        return listarColaboradores;
+    public ResponseEntity<List<Colaborador>> listarColaboradores() {
+        return ResponseEntity.ok(colaboradorService.listarTodos());
     }
 
-    /*
-     * @PostMapping("/salvarComValidacoes")
-     * public String salvarEmailUnico(@RequestBody Colaborador colaborador) {
-     * 
-     * String email = colaborador.getEmailColaborador();
-     * 
-     * // Verifica se o email já existe
-     * if (colaboradorRepository.findByEmailColaborador(email).isPresent()) {
-     * return "Email já cadastrado!";
-     * } else {
-     * 
-     * int idDepartamento = colaborador.getDepartamento().getIdDepartamento();
-     * Departamento departamento =
-     * departamentoRepository.findById(idDepartamento).get();
-     * 
-     * colaborador.setDepartamento(departamento);
-     * colaboradorRepository.save(colaborador);
-     * 
-     * return "Colaborador salvo com sucesso!";
-     * }
-     * }
-     */
-
+    // Rota: GET /colaborador/buscarNomeColaborador
     @GetMapping("/buscarNomeColaborador")
-    public Object buscarNomeColaborador(@RequestParam String nomeColaborador) {
-        List<Colaborador> colaborador = colaboradorRepository
-                .findByNomeColaboradorContainingIgnoreCase(nomeColaborador);
-
-        if (colaborador.isEmpty()) { // se a lista é vazia retorna a mensagem
-            return "Colaborador não encontrado";
-        } else {
-            return colaborador;
+    public ResponseEntity<?> buscarNomeColaborador(@RequestParam String nomeColaborador) {
+        Optional<Colaborador> colaboradores = colaboradorService.buscarPorNome(nomeColaborador);
+        
+        if (colaboradores.isEmpty()) {
+            return ResponseEntity.ok("Colaborador não encontrado");
         }
-
+        return ResponseEntity.ok(colaboradores);
     }
 
+    // Rota: PUT /colaborador/editarColaborador/{id}
     @PutMapping("/editarColaborador/{idColaboradorAlterar}")
-    public String editarColaborador(@PathVariable int idColaboradorAlterar, @RequestBody Colaborador novoColaborador) {
-
-        Colaborador colaborador = colaboradorRepository.findById(idColaboradorAlterar)
-                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado!"));
-
-        colaborador.setNomeColaborador(novoColaborador.getNomeColaborador());
-        colaborador.setCpfColaborador(novoColaborador.getCpfColaborador());
-        colaborador.setEmailColaborador(novoColaborador.getEmailColaborador());
-        colaborador.setSenhaColaborador(novoColaborador.getSenhaColaborador());
-
-        // Atualiza o departamento também
-        if (novoColaborador.getDepartamento() != null
-                && novoColaborador.getDepartamento().getIdDepartamento() != null) {
-            Departamento departamento = departamentoRepository.findById(
-                    novoColaborador.getDepartamento().getIdDepartamento())
-                    .orElseThrow(() -> new RuntimeException("Departamento não encontrado!"));
-            colaborador.setDepartamento(departamento);
+    public ResponseEntity<String> editarColaborador(@PathVariable Long idColaboradorAlterar, 
+                                                    @RequestBody ColaboradorDto dados) {
+        try {
+            colaboradorService.editarColaborador(idColaboradorAlterar, dados);
+            return ResponseEntity.ok("Colaborador alterado com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        colaboradorRepository.save(colaborador);
-
-        return "Colaborador alterado com sucesso!";
     }
 
+    // Rota: DELETE /colaborador/deletar/{id}
     @DeleteMapping("/deletar/{idColaborador}")
-    public String deleteForId(@PathVariable int idColaborador) { // PathVariable = vindo pela url
-
-        if (colaboradorRepository.existsById(idColaborador)) {
-
-            colaboradorRepository.deleteById(idColaborador);
-
-            return "Colaborador deletado com sucesso!";
-        } else {
-            return "Colaborador não encontrado";
+    public ResponseEntity<String> deleteForId(@PathVariable Long idColaborador) {
+        try {
+            colaboradorService.deletarColaborador(idColaborador);
+            return ResponseEntity.ok("Colaborador deletado com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.ok(e.getMessage());
         }
     }
-
 }

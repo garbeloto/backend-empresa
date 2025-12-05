@@ -3,105 +3,55 @@ package com.empresa.empresa.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.empresa.empresa.Dto.UsuarioLoginDto;
+
 import com.empresa.empresa.Entities.Usuario;
-import com.empresa.empresa.Repositories.UsuarioRepository;
+
+import com.empresa.empresa.Services.UsuarioService;
 
 @RestController
-
 @RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @PostMapping("/cadastrarComValidacoes")
-    public String cadastrarEmailUnico(@RequestBody Usuario usuario) { // verificar se o email já existe no banco de
-                                                                      // dados
-
-        String email = usuario.getEmailUsuario();
-
-        if (usuarioRepository.findByEmailUsuario(email).isPresent()) {
-
-            return "Email já cadastrado!";
-
-        } else {
-
-            String senhaCript = passwordEncoder.encode(usuario.getSenhaUsuario());
-            usuario.setSenhaUsuario(senhaCript);
-
-            usuarioRepository.save(usuario);
-            return "Usuário cadastrado com sucesso!";
-        }
-
-    }
-
-    @PostMapping("/loginUsuario") // login
-    private String login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
-
-        Usuario usuario = usuarioRepository.findByEmailUsuario(usuarioLoginDto.getEmailUsuario()).get();
-
-        if (usuario != null) {
-
-            if (passwordEncoder.matches(usuarioLoginDto.getSenhaUsuario(), usuario.getSenhaUsuario())) {
-
-                return "Login realizado com sucesso!";
-
-            } else {
-                return "Senha incorreta.";
-            }
-
-        } else {
-            return "Email não cadastrado.";
-        }
-    }
-
+    // Rota: GET /usuario/listarUsuarios
     @GetMapping("/listarUsuarios")
-    public List<Usuario> listarUsuarios() {
-        List<Usuario> listarUsuarios = usuarioRepository.findAll();
-
-        return listarUsuarios;
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
-    @PutMapping("/editarUsuario/{idUsuarioParaAlterar}")
-    public String editarUsuario(@PathVariable int idUsuarioParaAlterar, @RequestBody Usuario novoUsuario) {
-
-        Usuario usuario = usuarioRepository.findById(idUsuarioParaAlterar).get(); // indo buscar o usuario no banco de dados
-
-        usuario.setNomeUsuario(novoUsuario.getNomeUsuario()); // pegar o nome novo para setar (alterar) no antigo
-        usuario.setEmailUsuario(novoUsuario.getEmailUsuario()); // alterando o email
-        usuario.setCnpjUsuario(novoUsuario.getCnpjUsuario()); // alterando o cnpj
-        String senhaCript = passwordEncoder.encode(novoUsuario.getSenhaUsuario());
-        usuario.setSenhaUsuario(senhaCript); // alterando a senha
-
-        usuarioRepository.save(usuario); // salvando a pessoa com os novos dados
-
-        return "Usuario alterado com sucesso!";
+    // Rota: PUT /usuario/alterar-credenciais/{id}
+    // Usada para alterar Email ou Senha (regras de criptografia estão no Service)
+    @PutMapping("/alterar-credenciais/{idUsuario}")
+    public ResponseEntity<String> alterarCredenciais(@PathVariable Long idUsuario, 
+                                                    @RequestParam(required = false) String novoEmail,
+                                                    @RequestParam(required = false) String novaSenha) {
+        
+        usuarioService.atualizarCredenciais(idUsuario, novoEmail, novaSenha);
+        return ResponseEntity.ok("Credenciais atualizadas com sucesso!");
     }
 
+    // Rota: DELETE /usuario/deletar/{id}
     @DeleteMapping("/deletar/{idUsuario}")
-    public String deleteForId(@PathVariable int idUsuario) { // PathVariable = vindo pela url
-
-        if (usuarioRepository.existsById(idUsuario)) {
-
-            usuarioRepository.deleteById(idUsuario);
-
-            return "Usuario deletado com sucesso!";
-        } else {
-            return "Usuario não encontrado";
+    public ResponseEntity<String> deletarUsuario(@PathVariable Long idUsuario) {
+        try {
+            usuarioService.deletarUsuario(idUsuario);
+            return ResponseEntity.ok("Usuário deletado com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

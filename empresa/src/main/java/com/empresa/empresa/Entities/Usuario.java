@@ -1,74 +1,105 @@
 package com.empresa.empresa.Entities;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.empresa.empresa.Entities.Enums.UserRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity
-public class Usuario {
+import org.springframework.security.core.userdetails.UserDetails;
+
+    @Entity
+    @Table(name = "usuarios")
+    public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Integer idUsuario;
-    private String nomeUsuario;
+    private Integer id;
 
     @Column(unique = true)
-    private String emailUsuario;
-    private String cnpjUsuario;
-    private String senhaUsuario;
+    private String email;
+    private String senha;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
 
     public Usuario(){
 
     }
 
-    public Usuario(String nomeUsuario, String emailUsuario, String cnpjUsuario, String senhaUsuario) {
-        this.nomeUsuario = nomeUsuario;
-        this.emailUsuario = emailUsuario;
-        this.cnpjUsuario = cnpjUsuario;
-        this.senhaUsuario = senhaUsuario;
+    // Configuração do Spring Security para ler as roles
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.EMPRESA) return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == UserRole.COLABORADOR) return List.of(new SimpleGrantedAuthority("ROLE_COLABORADOR"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == UserRole.PROFISSIONAL) return List.of(new SimpleGrantedAuthority("ROLE_PROFISSIONAL"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    @Override
+    public String getPassword() { return senha; }
+    @Override
+    public String getUsername() { return email; }
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+    @Override
+    public boolean isEnabled() { return true; }
+
+    public Usuario(String email, String senha, UserRole role) {
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    // Getters e Setters
+    public Integer getId() {
+        return id;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public String getEmail() {
+        return email;
     }
 
-    public String getEmailUsuario() {
-        return emailUsuario;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setEmailUsuario(String emailUsuario) {
-        this.emailUsuario = emailUsuario;
+    public String getSenha() {
+        return senha;
     }
 
-    public String getCnpjUsuario() {
-        return cnpjUsuario;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
-    public void setCnpjUsuario(String cnpjUsuario) {
-        this.cnpjUsuario = cnpjUsuario;
+    public UserRole getRole() {
+        return role;
     }
 
-    public String getSenhaUsuario() {
-        return senhaUsuario;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
-
-    public void setSenhaUsuario(String senhaUsuario) {
-        this.senhaUsuario = senhaUsuario;
-    }
-
+    
+    
     
 }

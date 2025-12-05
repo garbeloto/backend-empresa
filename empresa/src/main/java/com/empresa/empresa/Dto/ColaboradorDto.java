@@ -1,23 +1,22 @@
 package com.empresa.empresa.Dto;
-
 public class ColaboradorDto {
 
     private String nomeColaborador;
     private String emailColaborador;
-    private String senhaColaborador;
-    private int idDepartamento;
-
+    private String senhaColaborador; 
+    private Long idDepartamento; 
+    private Boolean status;      
     public ColaboradorDto() {
-
     }
 
-    public ColaboradorDto(String nomeColaborador, String emailColaborador, String senhaColaborador,
-            int idDepartamento) {
+    public ColaboradorDto(String nomeColaborador, String emailColaborador, String senhaColaborador, Long idDepartamento, Boolean status) {
         this.nomeColaborador = nomeColaborador;
         this.emailColaborador = emailColaborador;
         this.senhaColaborador = senhaColaborador;
         this.idDepartamento = idDepartamento;
+        this.status = status;
     }
+
 
     public String getNomeColaborador() {
         return nomeColaborador;
@@ -43,12 +42,19 @@ public class ColaboradorDto {
         this.senhaColaborador = senhaColaborador;
     }
 
-    public int getIdDepartamento() {
+    public Long getIdDepartamento() {
         return idDepartamento;
     }
 
-    public void setIdDepartamento(int idDepartamento) {
+    public void setIdDepartamento(Long idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }
