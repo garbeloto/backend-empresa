@@ -37,7 +37,7 @@ public class ColaboradorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // --- LISTAGEM ---
+    //LISTAGEM
     public List<Colaborador> listarTodos() {
         return colaboradorRepository.findAll();
     }
@@ -46,7 +46,7 @@ public class ColaboradorService {
         return colaboradorRepository.findByNomeColaboradorContainingIgnoreCase(nome);
     }
 
-    // --- CADASTRO ---
+    //CADASTRO
     @Transactional
     public Colaborador cadastrarColaborador(ColaboradorDto dados, String emailEmpresaLogada) {
         // 1. Validação: Usa o getEmailColaborador do DTO
@@ -85,7 +85,7 @@ public class ColaboradorService {
         return colaboradorRepository.save(novoColaborador);
     }
 
-    // --- EDIÇÃO ---
+    //EDIÇÃO
     @Transactional
     public Colaborador editarColaborador(Long id, ColaboradorDto dados) {
         Colaborador colaborador = colaboradorRepository.findById(id)

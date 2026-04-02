@@ -31,7 +31,7 @@ public class Profissional {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // a qual empresa ele está vinculado (quem o contratou)
+    //A qual empresa ele está vinculado (quem o contratou)
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;

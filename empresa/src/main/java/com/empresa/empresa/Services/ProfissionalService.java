@@ -38,7 +38,7 @@ public class ProfissionalService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // --- LISTAGEM ---
+    // LISTAGEM
     public List<Profissional> listarTodos() {
         return profissionalRepository.findAll();
     }
@@ -47,7 +47,7 @@ public class ProfissionalService {
         return profissionalRepository.findByNomeProfissionalContainingIgnoreCase(nomeProfissional);
     }
 
-    // --- CADASTRO ---
+    // CADASTRO
     @Transactional
     public Profissional cadastrarProfissional(ProfissionalDto dados, String emailEmpresaLogada) {
         // 1. Validação: Usa o getEmailColaborador do DTO
@@ -91,7 +91,7 @@ public class ProfissionalService {
         return profissionalRepository.save(novoProfissional);
     }
 
-    // --- EDIÇÃO ---
+    // EDIÇÃO
     @Transactional
     public Profissional editarProfissional(Integer idProfissional, ProfissionalDto dados) {
         Profissional profissional = profissionalRepository.findById(idProfissional)
@@ -112,8 +112,7 @@ public class ProfissionalService {
             profissional.setEspecialidade(novaEspecialidade);
         }
 
-        // Atualiza Email (Login)
-        // Verifica se o email novo é diferente do atual
+        // Atualiza Email (Login) e verifica se o email novo é diferente do atual
         if (!dados.getEmailProfissional().equals(profissional.getUsuario().getUsername())) {
             if (usuarioRepository.findByEmail(dados.getEmailProfissional()).isPresent()) {
                 throw new RuntimeException("Email já em uso por outro usuário!");

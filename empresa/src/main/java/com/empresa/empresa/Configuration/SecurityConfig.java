@@ -107,8 +107,7 @@ public class SecurityConfig {
 
                 // urls permitidas
                 configuration.setAllowedOrigins(Arrays.asList(
-                                "http://localhost:8221",
-                                "http://127.0.0.1:8221"
+                                "http://localhost:8221"
 
                 ));
 
