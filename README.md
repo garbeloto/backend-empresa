@@ -1,83 +1,87 @@
 # backend-empresa
 
-Sistema back-end do projeto integrador Senac SC. Aplicação finalizada.
+Sistema Back-End Respire Bem do Projeto Integrador Jovem Programador Senac SC. Aplicação finalizada.
 
 ## Descrição
-API para gerenciar colaboradores e departamentos, com autenticação de usuários.
+API REST em Spring Boot para gerenciar:
+- Empresa
+- Usuários e autenticação (JWT)
+- Departamentos
+- Colaboradores
+- Profissionais e especialidades
+- Check-ins e dashboard
 
-## Funcionalidades implementadas
+## Entidades principais
+- `Empresa`
+- `Usuario` (com roles via `UserRole`)
+- `Departamento`
+- `Colaborador`
+- `Especialidade`
+- `Profissional`
+- `CheckIn` (histórico de check-ins)
 
-- Entidades:
-    - `UsuarioDto`, `UsuarioLoginDto`
-    - `Departamento`
-    - `Colaborador` (com relação a `Departamento`)
+## DTOs
+- `RegistroEmpresaDto`
+- `LoginDto`
+- `TokenResponse`
+- `ColaboradorDto`
+- `ProfissionalDto`
+- `CheckInDto`
+- `HistoricoCheckInDto`
+- `DashboardDto`
 
-- Autenticação e usuários:
-    - POST `/usuarios/cadastrar` - email único, senha criptografada
-    - POST `/usuarios/login` - validação de credenciais
+## Autenticação e autorização
+- `POST /auth/registrar/empresa` - cadastro inicial de empresa + usuário ADMIN
+- `POST /auth/login` - login retorna `TokenResponse` com JWT
 
-- Colaboradores:
-    - POST `/colaboradores` - cadastrar colaborador com departamento
-    - GET `/colaboradores?nome=...` - buscar colaborador por nome
-    - PUT `/colaboradores/{id}` - editar colaborador (incluindo departamento)
-    - GET `/colaboradores` - listar todos (se implementado)
+> Observação: endpoints protegidos exigem header `Authorization: Bearer <token>`.
 
-- Departamentos:
-    - POST `/departamentos` - cadastrar departamento
-    - GET `/departamentos` - listar departamentos
+## Endpoints da Empresa
+- `GET /empresa/meus-dados` - retorna dados da empresa do usuário autenticado
+- `PUT /empresa/atualizar-dados?nomeEmpresa={nome}&cnpjEmpresa={cnpj}` - atualiza nome/cnpj
+
+## Endpoints de Usuário (role admin)
+- `GET /usuario/listarUsuarios` - lista todos usuários
+- `PUT /usuario/alterar-credenciais/{idUsuario}?novoEmail={email}&novaSenha={senha}` - atualiza credenciais
+- `DELETE /usuario/deletar/{idUsuario}` - deleta usuário
+
+## Endpoints de Departamento
+- `GET /departamento/listarDepartamentos` - lista todos departamentos
+
+## Endpoints de Especialidade
+- `GET /especialidade/listarEspecialidades` - lista todas especialidades
+
+## Endpoints de Colaborador
+- `POST /colaborador/cadastrarColaborador` - cria colaborador a partir de `ColaboradorDto` (vincula à empresa autenticada)
+- `GET /colaborador/listarColaboradores` - lista todos colaboradores
+- `GET /colaborador/buscarNomeColaborador?nomeColaborador={nome}` - busca colaborador por nome (retorna 404/mesma resposta de não encontrado)
+- `PUT /colaborador/editarColaborador/{idColaboradorAlterar}` - edita usando `ColaboradorDto`
+- `DELETE /colaborador/deletar/{idColaborador}` - remove colaborador
+
+## Endpoints de Profissional
+- `POST /profissional/cadastrarProfissional` - cria profissional a partir de `ProfissionalDto` (vincula à empresa autenticada)
+- `GET /profissional/listarProfissionais` - lista todos profissionais
+- `GET /profissional/buscarNomeProfissional?nomeProfissional={nome}` - busca profissional por nome
+- `PUT /profissional/editarProfissional/{idProfissionalAlterar}` - edita profissional
+- `DELETE /profissional/deletar/{idProfissional}` - remove profissional
+
+## Endpoints de Check-in
+- `POST /checkin/fazerCheckIn` - registra check-in do colaborador usando `CheckInDto`
+- `GET /checkin/historico` - obtém histórico de check-ins do usuário autenticado
+
+## Endpoint de Dashboard
+- `GET /dashboard/dados` - retorna dados agregados para gráficos/visões (via `DashboardDto`)
+
+## Observações técnicas
+- Spring Security + JWT (via `SecurityConfig` e `SecurityFilter`)
+- Senha criptografada com BCrypt
+- Repositórios JPA com `spring-boot-starter-data-jpa`
+- Base de dados configurada em `application.properties`
 
 ## Status
-- Sistema concluído e em produção/testes finais.
-- Relacionamento entre colaborador e departamento finalizado.
+- Sistema concluído, com API REST e segurança implementadas
+- Relacionamentos (empresa -> colaboradores/profissionais; colaborador -> departamento) concluídos
 
-## Observações
-- Banco de dados configurado e migrado.
-- Validações de entrada e tratamento de erros implementados.
-- Segurança com senhas criptografadas e login com token (JWT).
 
-Funções Concluídas: 
-Crud colaborador:
-- PUT editar colaborador
-- GET buscar colaborador pelo nome
-- GET listar colaboradores
-- POST cadastrar colaborador
-- DELETE deletarColaborador
 
-Crud usuario:
-- PUT editar usuario
-- POST login usuário
-- POST cadastrar usuário com validação de email único e salvar com senha criptografada
-- GET listar usuarios
-- DELETE deletar usuario
-
-- listar departamentos que estão no bd
-  
-Entidades:
-- Colaborador
-- Departamento
-- Usuario
-
-Repositórios: 
-- ColaboradorRepository
-- DepartamentoRepository
-- UsuarioRepository
-  
-Controller:
-- ColaboradorController
-- DepartamentoController
-- UsuarioController
-
-DTO:
-- ColaboradorDto
-- ColaboradorLoginDto
-- UsuarioDto
-- UsuarioLoginDto
-
-Funções em andamento:
-
-- senha criptografada para usuario, colaborador e profissional
-- cadastrar colaborador com validações
-- fazer login colaboardor com colaboradorLoginDto
-- entidade checkIn e conectar com colaborador
-- crud profissional
 
