@@ -3,13 +3,11 @@
 Sistema Back-End Respire Bem do Projeto Integrador Jovem Programador Senac SC. Aplicação finalizada.
 
 ## Descrição
-API REST em Spring Boot para gerenciar:
-- Empresa
-- Usuários e autenticação (JWT)
-- Departamentos
-- Colaboradores
-- Profissionais e especialidades
-- Check-ins e dashboard
+O sistema Respire Bem é uma API REST desenvolvida em Spring Boot com o objetivo de permitir que empresas acompanhem e gerenciem o bem-estar e a saúde mental de seus colaboradores de forma estruturada e segura.
+
+Por meio da plataforma, a empresa pode cadastrar e administrar colaboradores, departamentos e profissionais especializados (como psicólogos), além de registrar check-ins periódicos dos colaboradores, que servem para monitorar seu estado emocional ao longo do tempo. Esses dados são organizados e disponibilizados em dashboards, facilitando a visualização de indicadores e apoiando a tomada de decisões voltadas à qualidade de vida no ambiente corporativo.
+
+O sistema conta com autenticação via JWT, garantindo segurança no acesso, e oferece controle administrativo completo, incluindo gestão de usuários, atualização de dados da empresa e manutenção das informações relacionadas à equipe. Dessa forma, a solução integra gestão organizacional e cuidado com a saúde mental em uma única plataforma.
 
 ## Entidades principais
 - `Empresa`
@@ -81,7 +79,5 @@ API REST em Spring Boot para gerenciar:
 ## Status
 - Sistema concluído, com API REST e segurança implementadas
 - Relacionamentos (empresa -> colaboradores/profissionais; colaborador -> departamento) concluídos
-
-
 
 
