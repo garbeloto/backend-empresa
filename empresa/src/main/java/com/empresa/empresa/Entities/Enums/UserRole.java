@@ -1,9 +1,9 @@
 package com.empresa.empresa.Entities.Enums;
 
 public enum UserRole {
-    EMPRESA("empresa"), //admin da empresa
-    COLABORADOR("colaborador"), //funcionario comum
-    PROFISSIONAL("profissional"); //psicologo, coach, etc
+    EMPRESA("empresa"), 
+    COLABORADOR("colaborador"), 
+    PROFISSIONAL("profissional"); 
 
     private String role;
 

@@ -28,26 +28,21 @@ public class ColaboradorController {
     @Autowired
     private ColaboradorService colaboradorService;
 
-    // Rota: POST /colaborador/cadastrarColaborador
     @PostMapping("/cadastrarColaborador")
     public ResponseEntity<String> cadastrarColaborador(@RequestBody ColaboradorDto dados) {
-        // Pegamos o email da empresa logada automaticamente para vincular o colaborador a ela
+        // pega o email da empresa logada automaticamente para vincular o colaborador a ela
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String emailEmpresa = auth.getName();
 
-        // O Service cuida de verificar email único, criptografar senha e criar usuário
         colaboradorService.cadastrarColaborador(dados, emailEmpresa);
 
         return ResponseEntity.ok("Colaborador cadastrado com sucesso!");
     }
 
-    // Rota: GET /colaborador/listarColaboradores
     @GetMapping("/listarColaboradores")
     public ResponseEntity<List<Colaborador>> listarColaboradores() {
         return ResponseEntity.ok(colaboradorService.listarTodos());
     }
-
-    // Rota: GET /colaborador/buscarNomeColaborador
     @GetMapping("/buscarNomeColaborador")
     public ResponseEntity<?> buscarNomeColaborador(@RequestParam String nomeColaborador) {
         Optional<Colaborador> colaboradores = colaboradorService.buscarPorNome(nomeColaborador);
@@ -58,7 +53,6 @@ public class ColaboradorController {
         return ResponseEntity.ok(colaboradores);
     }
 
-    // Rota: PUT /colaborador/editarColaborador/{id}
     @PutMapping("/editarColaborador/{idColaboradorAlterar}")
     public ResponseEntity<String> editarColaborador(@PathVariable Long idColaboradorAlterar, 
                                                     @RequestBody ColaboradorDto dados) {
@@ -70,7 +64,7 @@ public class ColaboradorController {
         }
     }
 
-    // Rota: DELETE /colaborador/deletar/{id}
+
     @DeleteMapping("/deletar/{idColaborador}")
     public ResponseEntity<String> deleteForId(@PathVariable Long idColaborador) {
         try {

@@ -47,7 +47,6 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    // Equivalente ao seu antigo "deletar"
     public void deletarUsuario(Long id) {
         if (!usuarioRepository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado.");

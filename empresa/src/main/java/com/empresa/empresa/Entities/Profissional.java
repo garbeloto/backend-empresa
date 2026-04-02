@@ -17,51 +17,52 @@ public class Profissional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer idProfissional;
 
-    private String nome;
-    //Um Profissional tem UMA Especialidade
+    private String nomeProfissional;
     @ManyToOne
     @JoinColumn(name = "especialidade_id")
     private Especialidade especialidade; 
     
-    private Boolean status = true; // Valor padrão: Ativo (true)
+    private Boolean status = true; 
 
-    // O Login do profissional
+    //Login do profissional
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // A qual empresa ele está vinculado (quem o contratou)
+    // a qual empresa ele está vinculado (quem o contratou)
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
-    public Profissional() {}
+    public Profissional() {
 
+    }
 
-    public Profissional(String nome, Especialidade especialidade, Boolean status, Usuario usuario, Empresa empresa) {
-        this.nome = nome;
+    public Profissional(String nomeProfissional, Especialidade especialidade, Boolean status, Usuario usuario,
+            Empresa empresa) {
+        this.nomeProfissional = nomeProfissional;
         this.especialidade = especialidade;
         this.status = status;
         this.usuario = usuario;
         this.empresa = empresa;
     }
 
-    public Long getId() {
-        return id;
+    public Integer getIdProfissional() {
+        return idProfissional;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdProfissional(Integer idProfissional) {
+        this.idProfissional = idProfissional;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeProfissional() {
+        return nomeProfissional;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeProfissional(String nomeProfissional) {
+        this.nomeProfissional = nomeProfissional;
     }
 
     public Especialidade getEspecialidade() {
@@ -95,6 +96,8 @@ public class Profissional {
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
+
+    
     
 
     }

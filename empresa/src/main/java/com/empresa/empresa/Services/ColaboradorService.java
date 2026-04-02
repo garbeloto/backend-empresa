@@ -59,7 +59,7 @@ public class ColaboradorService {
                 .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
         Empresa empresa = empresaRepository.findByUsuario(usuarioEmpresa);
 
-        Departamento departamento = departamentoRepository.findById(dados.getIdDepartamento())
+        Departamento departamento = departamentoRepository.findById(dados.getDepartamentoId())
                 .orElseThrow(() -> new RuntimeException("Departamento não encontrado!"));
 
         // 3. Criar Usuario (Login) - Pegando email e senha do DTO
@@ -100,8 +100,8 @@ public class ColaboradorService {
         }
 
         // Atualiza Departamento
-        if (dados.getIdDepartamento() != null) {
-            Departamento novoDepto = departamentoRepository.findById(dados.getIdDepartamento())
+        if (dados.getDepartamentoId() != null) {
+            Departamento novoDepto = departamentoRepository.findById(dados.getDepartamentoId())
                     .orElseThrow(() -> new RuntimeException("Departamento não encontrado!"));
             colaborador.setDepartamento(novoDepto);
         }

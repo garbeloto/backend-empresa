@@ -4,16 +4,16 @@ public class ColaboradorDto {
     private String nomeColaborador;
     private String emailColaborador;
     private String senhaColaborador; 
-    private Long idDepartamento; 
+    private Long departamentoId; 
     private Boolean status;      
     public ColaboradorDto() {
     }
 
-    public ColaboradorDto(String nomeColaborador, String emailColaborador, String senhaColaborador, Long idDepartamento, Boolean status) {
+    public ColaboradorDto(String nomeColaborador, String emailColaborador, String senhaColaborador, Long departamentoId, Boolean status) {
         this.nomeColaborador = nomeColaborador;
         this.emailColaborador = emailColaborador;
         this.senhaColaborador = senhaColaborador;
-        this.idDepartamento = idDepartamento;
+        this.departamentoId = departamentoId;
         this.status = status;
     }
 
@@ -42,12 +42,12 @@ public class ColaboradorDto {
         this.senhaColaborador = senhaColaborador;
     }
 
-    public Long getIdDepartamento() {
-        return idDepartamento;
+    public Long getDepartamentoId() {
+        return departamentoId;
     }
 
-    public void setIdDepartamento(Long idDepartamento) {
-        this.idDepartamento = idDepartamento;
+    public void setDepartamentoId(Long departamentoId) {
+        this.departamentoId = departamentoId;
     }
 
     public Boolean getStatus() {

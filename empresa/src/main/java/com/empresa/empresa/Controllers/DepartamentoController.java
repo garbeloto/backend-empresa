@@ -16,9 +16,9 @@ import com.empresa.empresa.Repositories.DepartamentoRepository;
 public class DepartamentoController {
 
     @Autowired
-    DepartamentoRepository departamentoRepository;
+    private DepartamentoRepository departamentoRepository;
 
-    @GetMapping("/listarDepartamento")
+    @GetMapping("/listarDepartamentos")
     public ResponseEntity<List<Departamento>> listarDepartamentos() {
         return ResponseEntity.ok(departamentoRepository.findAll());
     }

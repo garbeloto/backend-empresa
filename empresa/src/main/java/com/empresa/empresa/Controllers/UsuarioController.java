@@ -27,14 +27,10 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Rota: GET /usuario/listarUsuarios
     @GetMapping("/listarUsuarios")
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
-
-    // Rota: PUT /usuario/alterar-credenciais/{id}
-    // Usada para alterar Email ou Senha (regras de criptografia estão no Service)
     @PutMapping("/alterar-credenciais/{idUsuario}")
     public ResponseEntity<String> alterarCredenciais(@PathVariable Long idUsuario, 
                                                     @RequestParam(required = false) String novoEmail,
@@ -44,7 +40,6 @@ public class UsuarioController {
         return ResponseEntity.ok("Credenciais atualizadas com sucesso!");
     }
 
-    // Rota: DELETE /usuario/deletar/{id}
     @DeleteMapping("/deletar/{idUsuario}")
     public ResponseEntity<String> deletarUsuario(@PathVariable Long idUsuario) {
         try {

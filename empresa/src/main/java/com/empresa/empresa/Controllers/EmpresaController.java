@@ -20,8 +20,6 @@ public class EmpresaController {
     @Autowired
     private EmpresaService empresaService;
 
-    // Rota: GET /empresa/meus-dados
-    // Retorna os dados da empresa baseada no Token de quem está logado
     @GetMapping("/meus-dados")
     public ResponseEntity<Empresa> getMeusDados() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -31,7 +29,6 @@ public class EmpresaController {
         return ResponseEntity.ok(empresa);
     }
 
-    // Rota: PUT /empresa/atualizar-dados
     @PutMapping("/atualizar-dados")
     public ResponseEntity<Empresa> atualizarDados(@RequestParam(required = false) String nomeEmpresa,
                                                 @RequestParam(required = false) String cnpjEmpresa) {

@@ -1,48 +1,55 @@
 package com.empresa.empresa.Dto;
 
-import jakarta.validation.constraints.Email;
 
 public class ProfissionalDto {
 
-    String nome;
-
-    @Email(message = "O email deve ser válido.")
-    String email; // Email será o login, usado para criar o Usuario PROFISSIONAL
-    
-    private Long especialidadeId; // Agora recebemos o ID
-    
-    Boolean status; // Opcional, usado principalmente para edição (true por padrão no Service)
+    private String nomeProfissional;
+    private String emailProfissional; 
+    private String senhaProfissional;
+    private Long especialidadeId; 
+    private Boolean status; 
 
     public ProfissionalDto() {
+
     }
 
-    public ProfissionalDto(String nome, String email, Long especialidadeId, Boolean status) {
-        this.nome = nome;
-        this.email = email;
+    public ProfissionalDto(String nomeProfissional, String emailProfissional, String senhaProfissional,
+            Long especialidadeId, Boolean status) {
+        this.nomeProfissional = nomeProfissional;
+        this.emailProfissional = emailProfissional;
+        this.senhaProfissional = senhaProfissional;
         this.especialidadeId = especialidadeId;
         this.status = status;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeProfissional() {
+        return nomeProfissional;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeProfissional(String nomeProfissional) {
+        this.nomeProfissional = nomeProfissional;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailProfissional() {
+        return emailProfissional;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailProfissional(String emailProfissional) {
+        this.emailProfissional = emailProfissional;
+    }
+
+    public String getSenhaProfissional() {
+        return senhaProfissional;
+    }
+
+    public void setSenhaProfissional(String senhaProfissional) {
+        this.senhaProfissional = senhaProfissional;
     }
 
     public Long getEspecialidadeId() {
         return especialidadeId;
     }
-    
+
     public void setEspecialidadeId(Long especialidadeId) {
         this.especialidadeId = especialidadeId;
     }
@@ -54,5 +61,7 @@ public class ProfissionalDto {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
+    
     
 }

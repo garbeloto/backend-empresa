@@ -25,7 +25,6 @@ public class AuthController {
     // Rota: POST /auth/login
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody LoginDto dados) {
-        // A lógica de autenticação e geração do token está toda no Service
         TokenResponse token = authService.realizarLogin(dados);
         return ResponseEntity.ok(token);
     }

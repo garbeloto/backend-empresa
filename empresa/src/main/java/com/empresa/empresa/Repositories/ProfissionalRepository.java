@@ -8,18 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.empresa.empresa.Entities.Empresa;
 import com.empresa.empresa.Entities.Profissional;
 
-public interface ProfissionalRepository extends JpaRepository<Profissional, Long>{
+public interface ProfissionalRepository extends JpaRepository<Profissional, Integer>{
 
     // Buscar por parte do nome (ignorando maiúsculas/minúsculas)
-    Optional<Profissional> findByNomeContainingIgnoreCase(String nome);
+    Optional<Profissional> findByNomeProfissionalContainingIgnoreCase(String nomeProfissional);
 
     // Listar profissionais de uma Empresa específica
     List<Profissional> findByEmpresa(Empresa empresa);
-
-    // Listar profissionais de uma Empresa, filtrando pelo Status (Ativo/Inativo)
-    //List<Profissional> findByEmpresaAndStatus(Empresa empresa, Boolean status);
     
     // Buscar profissional pelo seu objeto de login
-    Profissional findByUsuarioId(Long usuarioId);
+    Profissional findByUsuarioId(Integer usuarioId);
     
 }

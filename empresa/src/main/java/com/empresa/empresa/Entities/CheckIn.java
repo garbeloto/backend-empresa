@@ -22,7 +22,7 @@ public class CheckIn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCheckIn;
-    private LocalDate dataCheckIn;
+    private LocalDate dataCheckIns;
 
     @Column(length = 500)
     private String descricaoCheckIn;
@@ -37,9 +37,9 @@ public class CheckIn {
     public CheckIn() {
     }
 
-    // Construtor auxiliar que pega a data atual automaticamente
+    // construtor auxiliar que pega a data atual automaticamente
     public CheckIn(Sentimento sentimento, String descricaoCheckIn, Colaborador colaborador) {
-        this.dataCheckIn = LocalDate.now(); // Define a data automaticamente
+        this.dataCheckIns = LocalDate.now(); // define a data automaticamente
         this.sentimento = sentimento;
         this.descricaoCheckIn = descricaoCheckIn;
         this.colaborador = colaborador;
@@ -53,12 +53,12 @@ public class CheckIn {
         this.idCheckIn = idCheckIn;
     }
 
-    public LocalDate getDataCheckIn() {
-        return dataCheckIn;
+    public LocalDate getDataCheckIns() {
+        return dataCheckIns;
     }
 
-    public void setDataCheckIn(LocalDate dataCheckIn) {
-        this.dataCheckIn = dataCheckIn;
+    public void setDataCheckIns(LocalDate dataCheckIns) {
+        this.dataCheckIns = dataCheckIns;
     }
 
     public String getDescricaoCheckIn() {

@@ -1,16 +1,16 @@
 package com.empresa.empresa.Dto;
 
-import jakarta.validation.constraints.Email;
+
 
 public class RegistroEmpresaDto {
 
     String nomeEmpresa;
     String cnpjEmpresa;
-    @Email(message = "O email deve ser válido.")
-    String email; // O email que será o login do usuário EMPRESA
+
+    String email; // email do usuário admin da empresa
     
 
-    String senha;
+    String senha; // senha do usuário admin da empresa
 
     public RegistroEmpresaDto(){
 

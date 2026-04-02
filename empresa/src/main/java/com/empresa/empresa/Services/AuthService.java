@@ -48,18 +48,18 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 
-    // REGRA DE LOGIN (Antigo /loginUsuario)
+    // REGRA DE LOGIN 
     public TokenResponse realizarLogin(LoginDto dados) {
-        // O AuthenticationManager faz a validação de senha automaticamente (match)
+        // o AuthenticationManager faz a validação de senha automaticamente (match)
         var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getEmail(), dados.getSenha());
         var auth = authenticationManager.authenticate(usernamePassword);
 
-        // Se passou, gera o token
+        // se passou, gera o token
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
 
         return new TokenResponse(token);
     }
-    // REGRA DE CADASTRO (Antigo /cadastrarComValidacoes)
+    // REGRA DE CADASTRO DE EMPRESA
     @Transactional
     public void registrarEmpresa(RegistroEmpresaDto dados) {
         // 1. Validação de Email Único
@@ -78,11 +78,11 @@ public class AuthService implements UserDetailsService {
         
         Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
 
-        // 4. Criação da Empresa (Dados de Negócio - CNPJ, Nome)
+        // 4. Criação da Empresa
         Empresa novaEmpresa = new Empresa();
         novaEmpresa.setNomeEmpresa(dados.getNomeEmpresa());
         novaEmpresa.setCnpjEmpresa(dados.getCnpjEmpresa());
-        novaEmpresa.setUsuario(usuarioSalvo); // Amarra o login à empresa
+        novaEmpresa.setUsuario(usuarioSalvo); 
 
         empresaRepository.save(novaEmpresa);
     }

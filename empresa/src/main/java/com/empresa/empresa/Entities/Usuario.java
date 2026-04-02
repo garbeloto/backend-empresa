@@ -19,13 +19,13 @@ import jakarta.persistence.Table;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-    @Entity
-    @Table(name = "usuarios")
-    public class Usuario implements UserDetails {
+@Entity
+@Table(name = "usuarios")
+public class Usuario implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private Integer id;
+    private Integer id; 
 
     @Column(unique = true)
     private String email;
@@ -34,32 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-
-    public Usuario(){
-
-    }
-
-    // Configuração do Spring Security para ler as roles
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.EMPRESA) return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"), new SimpleGrantedAuthority("ROLE_USER"));
-        if(this.role == UserRole.COLABORADOR) return List.of(new SimpleGrantedAuthority("ROLE_COLABORADOR"), new SimpleGrantedAuthority("ROLE_USER"));
-        if(this.role == UserRole.PROFISSIONAL) return List.of(new SimpleGrantedAuthority("ROLE_PROFISSIONAL"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getPassword() { return senha; }
-    @Override
-    public String getUsername() { return email; }
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-    @Override
-    public boolean isEnabled() { return true; }
+    public Usuario() {}
 
     public Usuario(String email, String senha, UserRole role) {
         this.email = email;
@@ -67,39 +42,73 @@ import org.springframework.security.core.userdetails.UserDetails;
         this.role = role;
     }
 
-    // Getters e Setters
-    public Integer getId() {
-        return id;
+    // --- MÉTODOS UserDetails ---
+
+    // Garante que o Spring Security veja a Role com e sem o prefixo ROLE_ para flexibilidade.
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.EMPRESA) {
+            // Retorna as 2 formas: ROLE_EMPRESA (para hasRole) e EMPRESA (para hasAuthority)
+            return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"), new SimpleGrantedAuthority("EMPRESA"));
+        } else if (this.role == UserRole.COLABORADOR) {
+            // Retorna as 2 formas: ROLE_COLABORADOR e COLABORADOR
+            return List.of(new SimpleGrantedAuthority("ROLE_COLABORADOR"), new SimpleGrantedAuthority("COLABORADOR"));
+        } else if (this.role == UserRole.PROFISSIONAL) {
+            // Retorna as 2 formas: ROLE_PROFISSIONAL e PROFISSIONAL
+            return List.of(new SimpleGrantedAuthority("ROLE_PROFISSIONAL"), new SimpleGrantedAuthority("PROFISSIONAL"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public String getPassword() { 
+        return senha; }
+
+    @Override
+    public String getUsername() { 
+        return email; 
     }
 
-    public String getEmail() {
-        return email;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; 
+        }
+    @Override
+    public boolean isAccountNonLocked() { 
+        return true; 
+    }
+    @Override
+    public boolean isCredentialsNonExpired() { 
+        return true; 
+    }
+    @Override
+    public boolean isEnabled() { 
+        return true; 
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public Integer getId() { 
+        return id; 
     }
-
-    public String getSenha() {
-        return senha;
+    public void setId(Integer id) { 
+        this.id = id; 
     }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public String getEmail() { 
+        return email; 
     }
-
-    public UserRole getRole() {
-        return role;
+    public void setEmail(String email) { 
+        this.email = email; 
     }
-
-    public void setRole(UserRole role) {
-        this.role = role;
+    public String getSenha() { 
+        return senha; 
     }
-    
-    
-    
+    public void setSenha(String senha) { 
+        this.senha = senha; 
+    }
+    public UserRole getRole() { 
+        return role; 
+    }
+    public void setRole(UserRole role) { 
+        this.role = role; 
+    }
 }

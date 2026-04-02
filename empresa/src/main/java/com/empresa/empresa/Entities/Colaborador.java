@@ -23,14 +23,14 @@ public class Colaborador {
     @ManyToOne
     private Departamento departamento;
 
-    private Boolean status = true; // Valor padrão: Ativo (true)
+    private Boolean status = true; 
 
     // O Login do colaborador (Para ele fazer check-in)
     @OneToOne(cascade = CascadeType.ALL) // Ao salvar colaborador, salva usuario
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // A qual empresa ele pertence?
+    // a qual empresa ele pertence
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;

@@ -19,22 +19,22 @@ public class Empresa {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEmpresa;
+    private Integer idEmpresa;
 
     private String nomeEmpresa;
     private String cnpjEmpresa;
 
-    // O Login da empresa (EMPRESA)
+    // Login da empresa (EMPRESA)
     @OneToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // Uma empresa tem VÁRIOS colaboradores
+
     @OneToMany(mappedBy = "empresa")
-    @JsonIgnore // Evita loop infinito no JSON
+    @JsonIgnore 
     private List<Colaborador> colaboradores;
 
-    // Construtores, Getters e Setters
+
     public Empresa() {
         
     }
@@ -46,11 +46,11 @@ public class Empresa {
         this.colaboradores = colaboradores;
     }
 
-    public Long getIdEmpresa() {
+    public Integer getIdEmpresa() {
         return idEmpresa;
     }
 
-    public void setIdEmpresa(Long idEmpresa) {
+    public void setIdEmpresa(Integer idEmpresa) {
         this.idEmpresa = idEmpresa;
     }
 

@@ -3,6 +3,7 @@ package com.empresa.empresa.Services;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,42 +11,57 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.empresa.empresa.Entities.Usuario;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.empresa.empresa.Entities.Usuario;
 @Service
 public class TokenService {
 
-    @Value("${api.security.token.secret}") // Defina isso no application.properties
+    @Value("${api.security.token.secret}")
     private String secret;
 
+    // ----------- GERAR TOKEN -----------
     public String generateToken(Usuario usuario) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
+
             return JWT.create()
-                    .withIssuer("respire-bem-api")
+                    .withIssuer("api-empresa")
                     .withSubject(usuario.getEmail())
+                    .withClaim("role", usuario.getRole().name())
+                    .withClaim("id", usuario.getId())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
-        } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao gerar token", exception);
+
+        } catch (JWTCreationException e) {
+            throw new RuntimeException("Erro ao gerar token JWT.", e);
         }
     }
 
-    public String validateToken(String token) {
+
+    // ----------- VALIDAR TOKEN -----------
+    public DecodedJWT validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
+
             return JWT.require(algorithm)
-                    .withIssuer("respire-bem-api")
+                    .withIssuer("api-empresa")
                     .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException exception) {
-            return "";
+                    .verify(token);
+
+        } catch (Exception e) {
+            
+            return null;
         }
     }
 
-    private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+
+    // ----------- EXPIRA EM 2 HORAS -----------
+    private Date genExpirationDate() {
+        Instant expiration = LocalDateTime.now()
+                .plusHours(2)
+                .toInstant(ZoneOffset.of("-03:00"));
+
+        return Date.from(expiration);
     }
 }

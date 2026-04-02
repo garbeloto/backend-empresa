@@ -13,7 +13,7 @@ public class Especialidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEspecialidade;
+    private Integer idEspecialidade;
 
     private String nomeEspecialidade;
 
@@ -25,11 +25,11 @@ public class Especialidade {
         this.nomeEspecialidade = nomeEspecialidade;
     }
 
-    public Long getIdEspecialidade() {
+    public Integer getIdEspecialidade() {
         return idEspecialidade;
     }
 
-    public void setIdEspecialidade(Long idEspecialidade) {
+    public void setIdEspecialidade(Integer idEspecialidade) {
         this.idEspecialidade = idEspecialidade;
     }
 

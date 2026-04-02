@@ -2,7 +2,6 @@ package com.empresa.empresa.Dto;
 
 import com.empresa.empresa.Entities.Enums.Sentimento;
 
-// Usado para registrar um novo Check-in
 public class CheckInDto {
 
     private Sentimento sentimento;
