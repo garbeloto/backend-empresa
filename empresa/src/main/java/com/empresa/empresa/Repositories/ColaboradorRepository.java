@@ -1,11 +1,22 @@
 package com.empresa.empresa.Repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.empresa.empresa.Entities.Colaborador;
+import com.empresa.empresa.Entities.Empresa;
+import com.empresa.empresa.Entities.Usuario;
 
-public interface ColaboradorRepository extends JpaRepository<Colaborador, Integer>{
-    List<Colaborador> findByNomeColaboradorContainingIgnoreCase(String nomeColaborador); //ContainingIgnoreCase permite buscar mesmo se o usuário digitar só parte do nome e ignora maiúsculas/minúsculas.
+public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> {
+
+    // Buscar por parte do nome (ignorando maiúsculas/minúsculas)
+    Optional<Colaborador> findByNomeColaboradorContainingIgnoreCase(String nomeColaborador);
+
+    // Listar colaboradores de uma Empresa específica (para listagem no Dashboard)
+    List<Colaborador> findByEmpresa(Empresa empresa);
+
+    // Buscar colaborador pelo seu objeto de login
+    Colaborador findByUsuario(Usuario usuario);
 }
