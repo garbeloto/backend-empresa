@@ -1,74 +1,114 @@
 package com.empresa.empresa.Entities;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.empresa.empresa.Entities.Enums.UserRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Usuario {
+@Table(name = "usuarios")
+public class Usuario implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private Integer idUsuario;
-    private String nomeUsuario;
+    private Integer id; 
 
     @Column(unique = true)
-    private String emailUsuario;
-    private String cnpjUsuario;
-    private String senhaUsuario;
+    private String email;
+    private String senha;
 
-    public Usuario(){
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
+    public Usuario() {}
+
+    public Usuario(String email, String senha, UserRole role) {
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
     }
 
-    public Usuario(String nomeUsuario, String emailUsuario, String cnpjUsuario, String senhaUsuario) {
-        this.nomeUsuario = nomeUsuario;
-        this.emailUsuario = emailUsuario;
-        this.cnpjUsuario = cnpjUsuario;
-        this.senhaUsuario = senhaUsuario;
+    // --- MÉTODOS UserDetails ---
+
+    // Garante que o Spring Security veja a Role com e sem o prefixo ROLE_ para flexibilidade.
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.EMPRESA) {
+            // Retorna as 2 formas: ROLE_EMPRESA (para hasRole) e EMPRESA (para hasAuthority)
+            return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"), new SimpleGrantedAuthority("EMPRESA"));
+        } else if (this.role == UserRole.COLABORADOR) {
+            // Retorna as 2 formas: ROLE_COLABORADOR e COLABORADOR
+            return List.of(new SimpleGrantedAuthority("ROLE_COLABORADOR"), new SimpleGrantedAuthority("COLABORADOR"));
+        } else if (this.role == UserRole.PROFISSIONAL) {
+            // Retorna as 2 formas: ROLE_PROFISSIONAL e PROFISSIONAL
+            return List.of(new SimpleGrantedAuthority("ROLE_PROFISSIONAL"), new SimpleGrantedAuthority("PROFISSIONAL"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    @Override
+    public String getPassword() { 
+        return senha; }
+
+    @Override
+    public String getUsername() { 
+        return email; 
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; 
+        }
+    @Override
+    public boolean isAccountNonLocked() { 
+        return true; 
+    }
+    @Override
+    public boolean isCredentialsNonExpired() { 
+        return true; 
+    }
+    @Override
+    public boolean isEnabled() { 
+        return true; 
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public Integer getId() { 
+        return id; 
     }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setId(Integer id) { 
+        this.id = id; 
     }
-
-    public String getEmailUsuario() {
-        return emailUsuario;
+    public String getEmail() { 
+        return email; 
     }
-
-    public void setEmailUsuario(String emailUsuario) {
-        this.emailUsuario = emailUsuario;
+    public void setEmail(String email) { 
+        this.email = email; 
     }
-
-    public String getCnpjUsuario() {
-        return cnpjUsuario;
+    public String getSenha() { 
+        return senha; 
     }
-
-    public void setCnpjUsuario(String cnpjUsuario) {
-        this.cnpjUsuario = cnpjUsuario;
+    public void setSenha(String senha) { 
+        this.senha = senha; 
     }
-
-    public String getSenhaUsuario() {
-        return senhaUsuario;
+    public UserRole getRole() { 
+        return role; 
     }
-
-    public void setSenhaUsuario(String senhaUsuario) {
-        this.senhaUsuario = senhaUsuario;
+    public void setRole(UserRole role) { 
+        this.role = role; 
     }
-
-    
 }
